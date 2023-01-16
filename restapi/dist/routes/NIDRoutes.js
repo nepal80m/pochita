@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const NIDControllers_1 = require("../controllers/NIDControllers");
+const NIDRouter = (0, express_1.Router)();
+NIDRouter.get("/", NIDControllers_1.queryAllNationalIdentities);
+NIDRouter.post("/", NIDControllers_1.createNationalIdentity);
+NIDRouter.get("/:NIN", NIDControllers_1.queryNationalIdentity);
+NIDRouter.get("/check/:NIN", NIDControllers_1.NationalIdentityExists);
+NIDRouter.put("/:NIN", NIDControllers_1.updateNationalIdentity);
+NIDRouter.delete("/:NIN", NIDControllers_1.deleteNationalIdentity);
+exports.default = NIDRouter;

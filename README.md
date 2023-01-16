@@ -1,7 +1,7 @@
 
 ## Install the required binaries and configurations for the blockchain network.
 
-Run the following command from project root directory.
+Run the following command from project root directory(pochita/).
 ```
 curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh && ./install-fabric.sh d b && rm install-fabric.sh
 ```
@@ -29,7 +29,7 @@ cd ..
 Run following command from the project root directory.
 ```
 cd restapi/
-node app.js
+npm run dev
 cd ..
 ```
 

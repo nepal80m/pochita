@@ -1,29 +1,26 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const port = 3000;
-const fs = require('fs');
-const path = require('path');
-const { connect, Contract, Identity, Signer, signers } = require('@hyperledger/fabric-gateway');
-const grpc = require('@grpc/grpc-js');
-const crypto = require('crypto');
-const { TextDecoder } = require('util');
+import { connect, Contract, Identity, Signer, signers } from '@hyperledger/fabric-gateway';
+import { credentials as _credentials, Client } from '@grpc/grpc-js';
+import { resolve } from 'path';
+import { readFileSync } from 'fs';
+import { createPrivateKey } from 'crypto';
 
 const channelName = 'mychannel';
 const chaincodeName = 'parichaya';
 const mspId = 'Org1MSP';
-const utf8Decoder = new TextDecoder();
-
-
-
-
 const peerEndpoint = 'localhost:7051';
 const peerHostAlias = 'peer0.org1.example.com'
 
 
 
+export class Connection {
+    public static contract: Contract;
+    public init() {
+        initFabric()
+    }
+}
 
-app.get("/", async (req, res) => {
+async function initFabric() {
+    // The gRPC client connection should be shared by all Gateway connections to this endpoint.
     const client = await newGrpcConnection();
 
     const gateway = connect({
@@ -45,31 +42,34 @@ app.get("/", async (req, res) => {
         },
     });
 
-    let result;
     try {
         // Get a network instance representing the channel where the smart contract is deployed.
         const network = gateway.getNetwork(channelName);
 
         // Get the smart contract from the network.
         const contract = network.getContract(chaincodeName);
+        Connection.contract = contract;
+
+        // Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
+        //        await initLedger(contract);
 
 
-        const resultBytes = await contract.evaluateTransaction('queryAllNationalIdentities');
-
-        const resultJson = utf8Decoder.decode(resultBytes);
-        result = JSON.parse(resultJson);
+    } catch (e) {
+        console.log("Couldn't get the network or the contract..");
+        console.log(e.message);
     } finally {
-        gateway.close();
-        client.close();
+        console.log('Connected to the blockchain..');
+        // gateway.close();
+        // client.close();
     }
-    res.send(result);
-    // res.send("Hello World!");
-});
+}
+
+
 
 async function newGrpcConnection() {
-    const tlsRootCert = fs.readFileSync('cacert.pem', () => { });
-    const tlsCredentials = grpc.credentials.createSsl(tlsRootCert);
-    return new grpc.Client(peerEndpoint, tlsCredentials, {
+    const tlsRootCert = readFileSync('cacert.pem');
+    const tlsCredentials = _credentials.createSsl(tlsRootCert);
+    return new Client(peerEndpoint, tlsCredentials, {
         'grpc.ssl_target_name_override': peerHostAlias,
     });
 }
@@ -77,18 +77,13 @@ async function newGrpcConnection() {
 
 
 async function newIdentity() {
-    const credentials = fs.readFileSync('signcert.pem', () => { });
+    const credentials = readFileSync('signcert.pem');
     return { mspId, credentials };
 }
 
 async function newSigner() {
-    const keyPath = path.resolve('privatekey.pem');
-    const privateKeyPem = fs.readFileSync(keyPath, () => { });
-    const privateKey = crypto.createPrivateKey(privateKeyPem);
+    const keyPath = resolve('privatekey.pem');
+    const privateKeyPem = readFileSync(keyPath);
+    const privateKey = createPrivateKey(privateKeyPem);
     return signers.newPrivateKeySigner(privateKey);
 }
-
-app.listen(port, () => {
-    console.log(`Server running on port ${port} at http://localhost:${port}`);
-}
-);
