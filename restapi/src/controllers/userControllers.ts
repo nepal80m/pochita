@@ -7,6 +7,7 @@ import { Request, Response } from 'express';
 const SECRET_KEY = 'this is a very very secret key!';
 export const register = async (req: Request, res: Response) => {
     const { username, password } = req.body;
+    console.log(`Register requested with username=${username} and password=${password}`)
 
     try {
         const existingUser = await userModel.findOne({ username })
@@ -24,7 +25,8 @@ export const register = async (req: Request, res: Response) => {
         const token = sign({ username: result.username, id: result._id }, SECRET_KEY,
             // { expiresIn: "1h" }
         );
-        res.status(201).json({ user: result, token });
+        console.log(`Created token: ${token}`)
+        res.status(201).json({ user: username, token });
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Something went wrong." });
@@ -32,8 +34,12 @@ export const register = async (req: Request, res: Response) => {
 };
 
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
+    console.log(req.body)
+    console.log(req.params)
+
     const { username, password } = req.body;
+    console.log(`Login requested with username=${username} and password=${password}`)
 
     try {
         const existingUser = await userModel.findOne({ username })
@@ -42,7 +48,6 @@ export const login = async (req, res) => {
         }
 
         const matchPassword = await bcrypt.compare(password, existingUser.password)
-
         if (!matchPassword) {
             return res.status(400).json({ message: "Invalid Credentials" })
         }

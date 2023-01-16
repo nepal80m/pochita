@@ -44,12 +44,13 @@ export const createNationalIdentity = async (req: Request, res: Response) => {
 
 export const queryNationalIdentity = async (req: Request, res: Response) => {
     const { NIN } = req.params
-
+    console.log(`Getting data for NIN: ${NIN}`)
     try {
 
         const resultBytes = await Connection.contract.evaluateTransaction('queryNationalIdentity', NIN);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
+        console.log(`Sending data: ${result}`)
         res.status(200).send(result)
     } catch (error) {
         console.log(error)
