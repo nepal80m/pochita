@@ -10,6 +10,9 @@ const utf8Decoder = new TextDecoder();
 new Connection().init();
 
 const app = express();
+var cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 
 

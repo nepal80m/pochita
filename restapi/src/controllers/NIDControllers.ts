@@ -19,6 +19,8 @@ export const queryAllNationalIdentities = async (req: Request, res: Response) =>
 export const createNationalIdentity = async (req: Request, res: Response) => {
 
     const { NIN, documentDetails } = req.body
+    console.log(`Requested to create document with NIN: {NIN}`)
+    console.log(documentDetails)
     if (!NIN || !documentDetails) {
         return res.status(400).json({ message: "NIN or documentDetails missing" });
     }
@@ -28,6 +30,7 @@ export const createNationalIdentity = async (req: Request, res: Response) => {
 
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
+        console.log(`Created document with NIN: ${NIN}`)
         res.send(result)
 
     } catch (error) {
