@@ -9,4 +9,5 @@
 const NationalIdentity = require('./lib/nationalIdentity');
 
 module.exports.NationalIdentity = NationalIdentity;
+
 module.exports.contracts = [NationalIdentity];

@@ -12,6 +12,7 @@ export const register = async (req: Request, res: Response) => {
     try {
         const existingUser = await userModel.findOne({ username })
         if (existingUser) {
+            console.log("User already exists")
             return res.status(400).json({ message: "user already exists" });
         }
 
@@ -21,6 +22,7 @@ export const register = async (req: Request, res: Response) => {
             username,
             password: hashedPassword
         })
+        console.log(`Registered user: ${result}`)
 
         const token = sign({ username: result.username, id: result._id }, SECRET_KEY,
             // { expiresIn: "1h" }
@@ -44,16 +46,20 @@ export const login = async (req: Request, res: Response) => {
     try {
         const existingUser = await userModel.findOne({ username })
         if (!existingUser) {
+            console.log("User not found.")
             return res.status(404).json({ message: "User not found" });
         }
 
         const matchPassword = await bcrypt.compare(password, existingUser.password)
         if (!matchPassword) {
+
+            console.log("Password does not match.")
             return res.status(400).json({ message: "Invalid Credentials" })
         }
         const token = sign({ username: existingUser.username, id: existingUser._id }, SECRET_KEY,
             //  { expiresIn: "1h" }
         );
+        console.log(`Logged in. Returning token: ${token}`)
         res.status(201).json({ user: existingUser, token });
 
 

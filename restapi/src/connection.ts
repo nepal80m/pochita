@@ -4,8 +4,10 @@ import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import { createPrivateKey } from 'crypto';
 
-const channelName = 'mychannel';
-const chaincodeName = 'parichaya';
+const channelName = 'digital-identity';
+const nationalIdentityChaincodeName = 'nationalIdentity_chaincode';
+const citizenshipChaincodeName = 'citizenship_chaincode';
+const drivingLicenseChaincodeName = 'drivingLicense_chaincode';
 const mspId = 'Org1MSP';
 const peerEndpoint = 'localhost:7051';
 const peerHostAlias = 'peer0.org1.example.com'
@@ -13,7 +15,9 @@ const peerHostAlias = 'peer0.org1.example.com'
 
 
 export class Connection {
-    public static contract: Contract;
+    public static nationalIdentityContract: Contract;
+    public static citizenshipContract: Contract;
+    public static drivingLicenseContract: Contract;
     public init() {
         initFabric()
     }
@@ -47,8 +51,12 @@ async function initFabric() {
         const network = gateway.getNetwork(channelName);
 
         // Get the smart contract from the network.
-        const contract = network.getContract(chaincodeName);
-        Connection.contract = contract;
+        const nationalIdentityContract = network.getContract(nationalIdentityChaincodeName);
+        const citizenshipContract = network.getContract(citizenshipChaincodeName);
+        const drivingLicenseContract = network.getContract(drivingLicenseChaincodeName);
+        Connection.nationalIdentityContract = nationalIdentityContract;
+        Connection.citizenshipContract = citizenshipContract;
+        Connection.drivingLicenseContract = drivingLicenseContract;
 
         // Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
         //        await initLedger(contract);
