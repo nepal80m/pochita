@@ -33,7 +33,7 @@ class NationalIdentity extends Contract {
                 occupation: 'Student',
                 caste: 'Brahmin',
                 religion: 'Hindu',
-                mobile_number: '9851228881',
+                mobile_number: '+9779851228881',
                 birth_state: 'Bagmati',
                 birth_district: 'Kathmandu',
                 birth_municipality: 'Kathmandu',
@@ -113,6 +113,7 @@ class NationalIdentity extends Contract {
         const exists = await this.checkIfNationalIdentityExists(ctx, NIN);
         if (!exists) {
             throw new Error(`National identity ${NIN} does not exist`);
+
         }
 
         const updatedNationalIdentity = JSON.parse(updatedDocumentDetails)

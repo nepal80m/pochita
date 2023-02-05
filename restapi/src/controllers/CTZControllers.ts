@@ -54,42 +54,63 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
     console.log(`Requested to query CTZ with NIN: ${NIN}`)
     try {
 
-        const ctzResultBytes = await Connection.citizenshipContract.evaluateTransaction('queryCitizenshipByNIN', NIN);
-        const ctzResultJson = utf8Decoder.decode(ctzResultBytes);
-        const ctzResult = JSON.parse(ctzResultJson);
-
-        const nidResultBytes = await Connection.citizenshipContract.evaluateTransaction('queryNationalIdentity', NIN);
-        const nidResultJson = utf8Decoder.decode(nidResultBytes);
-        const nidResult = JSON.parse(nidResultJson);
-
-        ctzResult.face_image = nidResult.face_image;
-        ctzResult.first_name = nidResult.first_name;
-        ctzResult.first_name_devanagari = nidResult.first_name_devanagari;
-        ctzResult.middle_name = nidResult.middle_name;
-        ctzResult.middle_name_devanagari = nidResult.middle_name_devanagari;
-        ctzResult.last_name = nidResult.last_name;
-        ctzResult.last_name_devanagari = nidResult.last_name_devanagari;
-        ctzResult.dob = nidResult.dob;
-        ctzResult.birth_state = nidResult.birth_state;
-        ctzResult.birth_district = nidResult.birth_district;
-        ctzResult.birth_municipality = nidResult.birth_municipality;
-        ctzResult.birth_ward = nidResult.birth_ward;
-        ctzResult.birth_tole = nidResult.birth_tole;
-        ctzResult.permanent_state = nidResult.permanent_state;
-        ctzResult.permanent_district = nidResult.permanent_district;
-        ctzResult.permanent_municipality = nidResult.permanent_municipality;
-        ctzResult.permanent_ward = nidResult.permanent_ward;
-        ctzResult.permanent_tole = nidResult.permanent_tole;
-        ctzResult.father_first_name = nidResult.father_first_name;
-        ctzResult.father_middle_name = nidResult.father_middle_name;
-        ctzResult.father_last_name = nidResult.father_last_name;
-        ctzResult.mother_first_name = nidResult.mother_first_name;
-        ctzResult.mother_middle_name = nidResult.mother_middle_name;
-        ctzResult.mother_last_name = nidResult.mother_last_name;
 
 
-        console.log(`Returning data: ${ctzResult}`)
-        res.status(200).send(ctzResult)
+
+
+        const checkResultBytes = await Connection.citizenshipContract.evaluateTransaction('checkIfCitizenshipExists', NIN);
+        const checkResultJson = utf8Decoder.decode(checkResultBytes);
+        const exists = JSON.parse(checkResultJson);
+        if (exists) {
+            console.log("CTZ exists")
+
+            const ctzResultBytes = await Connection.citizenshipContract.evaluateTransaction('queryCitizenshipByNIN', NIN);
+            const ctzResultJson = utf8Decoder.decode(ctzResultBytes);
+            const ctzResult = JSON.parse(ctzResultJson);
+
+            const nidResultBytes = await Connection.nationalIdentityContract.evaluateTransaction('queryNationalIdentity', NIN);
+            const nidResultJson = utf8Decoder.decode(nidResultBytes);
+            const nidResult = JSON.parse(nidResultJson);
+
+            ctzResult.face_image = nidResult.face_image;
+            ctzResult.first_name = nidResult.first_name;
+            ctzResult.first_name_devanagari = nidResult.first_name_devanagari;
+            ctzResult.middle_name = nidResult.middle_name;
+            ctzResult.middle_name_devanagari = nidResult.middle_name_devanagari;
+            ctzResult.last_name = nidResult.last_name;
+            ctzResult.last_name_devanagari = nidResult.last_name_devanagari;
+            ctzResult.dob = nidResult.dob;
+            ctzResult.birth_state = nidResult.birth_state;
+            ctzResult.birth_district = nidResult.birth_district;
+            ctzResult.birth_municipality = nidResult.birth_municipality;
+            ctzResult.birth_ward = nidResult.birth_ward;
+            ctzResult.birth_tole = nidResult.birth_tole;
+            ctzResult.permanent_state = nidResult.permanent_state;
+            ctzResult.permanent_district = nidResult.permanent_district;
+            ctzResult.permanent_municipality = nidResult.permanent_municipality;
+            ctzResult.permanent_ward = nidResult.permanent_ward;
+            ctzResult.permanent_tole = nidResult.permanent_tole;
+            ctzResult.father_first_name = nidResult.father_first_name;
+            ctzResult.father_middle_name = nidResult.father_middle_name;
+            ctzResult.father_last_name = nidResult.father_last_name;
+            ctzResult.mother_first_name = nidResult.mother_first_name;
+            ctzResult.mother_middle_name = nidResult.mother_middle_name;
+            ctzResult.mother_last_name = nidResult.mother_last_name;
+
+
+            console.log(`Returning data: ${JSON.stringify(ctzResult)}`)
+            res.status(200).send(ctzResult)
+
+        }
+        else {
+            console.log("CTZ does not exist")
+            res.status(404).send({ message: "CTZ does not exist" })
+        }
+
+
+
+
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Something went wrong." });

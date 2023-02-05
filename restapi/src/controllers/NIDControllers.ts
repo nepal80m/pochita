@@ -54,11 +54,28 @@ export const queryNationalIdentity = async (req: Request, res: Response) => {
     console.log(`Requested to query NID with NIN: ${NIN}`)
     try {
 
-        const resultBytes = await Connection.nationalIdentityContract.evaluateTransaction('queryNationalIdentity', NIN);
-        const resultJson = utf8Decoder.decode(resultBytes);
-        const result = JSON.parse(resultJson);
-        console.log(`Returning data: ${result}`)
-        res.status(200).send(result)
+
+
+        const checkResultBytes = await Connection.nationalIdentityContract.evaluateTransaction('checkIfNationalIdentityExists', NIN);
+        const checkResultJson = utf8Decoder.decode(checkResultBytes);
+        const exists = JSON.parse(checkResultJson);
+        if (exists) {
+            console.log("NID exists")
+
+            const resultBytes = await Connection.nationalIdentityContract.evaluateTransaction('queryNationalIdentity', NIN);
+            const resultJson = utf8Decoder.decode(resultBytes);
+            const result = JSON.parse(resultJson);
+            console.log(`Returning data: ${JSON.stringify(result)}`)
+            res.status(200).send(result)
+
+
+        }
+        else {
+            console.log("NID does not exist")
+            res.status(404).send({ message: "NID does not exist" })
+        }
+
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Something went wrong." });
