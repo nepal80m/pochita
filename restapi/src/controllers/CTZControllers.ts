@@ -72,6 +72,7 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
             const nidResultJson = utf8Decoder.decode(nidResultBytes);
             const nidResult = JSON.parse(nidResultJson);
 
+
             ctzResult.face_image = nidResult.face_image;
             ctzResult.first_name = nidResult.first_name;
             ctzResult.first_name_devanagari = nidResult.first_name_devanagari;
@@ -79,23 +80,50 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
             ctzResult.middle_name_devanagari = nidResult.middle_name_devanagari;
             ctzResult.last_name = nidResult.last_name;
             ctzResult.last_name_devanagari = nidResult.last_name_devanagari;
+
             ctzResult.dob = nidResult.dob;
+            ctzResult.gender = nidResult.gender;
+
             ctzResult.birth_state = nidResult.birth_state;
+            ctzResult.birth_state_devanagari = nidResult.birth_state_devanagari;
             ctzResult.birth_district = nidResult.birth_district;
+            ctzResult.birth_district_devanagari = nidResult.birth_district_devanagari;
             ctzResult.birth_municipality = nidResult.birth_municipality;
+            ctzResult.birth_municipality_devanagari = nidResult.birth_municipality_devanagari;
             ctzResult.birth_ward = nidResult.birth_ward;
             ctzResult.birth_tole = nidResult.birth_tole;
+
             ctzResult.permanent_state = nidResult.permanent_state;
+            ctzResult.permanent_state_devanagari = nidResult.permanent_state_devanagari;
             ctzResult.permanent_district = nidResult.permanent_district;
+            ctzResult.permanent_district_devanagari = nidResult.permanent_district_devanagari;
             ctzResult.permanent_municipality = nidResult.permanent_municipality;
+            ctzResult.permanent_municipality_devanagari = nidResult.permanent_municipality_devanagari;
             ctzResult.permanent_ward = nidResult.permanent_ward;
             ctzResult.permanent_tole = nidResult.permanent_tole;
+            ctzResult.permanent_house_number = nidResult.permanent_house_number;
+
+
             ctzResult.father_first_name = nidResult.father_first_name;
+            ctzResult.father_first_name_devanagari = nidResult.father_first_name_devanagari;
             ctzResult.father_middle_name = nidResult.father_middle_name;
+            ctzResult.father_middle_name_devanagari = nidResult.father_middle_name_devanagari;
             ctzResult.father_last_name = nidResult.father_last_name;
+            ctzResult.father_last_name_devanagari = nidResult.father_last_name_devanagari;
+
             ctzResult.mother_first_name = nidResult.mother_first_name;
+            ctzResult.mother_first_name_devanagari = nidResult.mother_first_name_devanagari;
             ctzResult.mother_middle_name = nidResult.mother_middle_name;
+            ctzResult.mother_middle_name_devanagari = nidResult.mother_middle_name_devanagari;
             ctzResult.mother_last_name = nidResult.mother_last_name;
+            ctzResult.mother_last_name_devanagari = nidResult.mother_last_name_devanagari;
+
+            ctzResult.spouse_first_name = nidResult.spouse_first_name;
+            ctzResult.spouse_first_name_devanagari = nidResult.spouse_first_name_devanagari;
+            ctzResult.spouse_middle_name = nidResult.spouse_middle_name;
+            ctzResult.spouse_middle_name_devanagari = nidResult.spouse_middle_name_devanagari;
+            ctzResult.spouse_last_name = nidResult.spouse_last_name;
+            ctzResult.spouse_last_name_devanagari = nidResult.spouse_last_name_devanagari;
 
 
             console.log(`Returning data: ${JSON.stringify(ctzResult)}`)
