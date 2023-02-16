@@ -20,9 +20,30 @@ class Citizenship extends Contract {
             {
                 NIN: "699-526-518-7",
                 CTZ_CCN: "123456789",
+                CTZ_citizenship_type: "Descent",
+                CTZ_citizenship_type_devanagari: "बंसज",
+
+                CTZ_father_CCN: "987654321",
+                CTZ_father_address_devanagari: "काठमाडौं, बागमती, नेपाल",
+                CTZ_father_citizenship_type_devanagari: "बंसज",
+
+                CTZ_mother_CCN: "987654321",
+                CTZ_mother_address_devanagari: "काठमाडौं, बागमती, नेपाल",
+                CTZ_mother_citizenship_type_devanagari: "बंसज",
+
+                CTZ_spouse_CCN: null,
+                CTZ_spouse_address_devanagari: null,
+                CTZ_spouse_citizenship_type_devanagari: null,
+
+
                 CTZ_issued_district: "Kathmandu",
-                CTZ_issued_date: new Date('2020-02-29').toISOString(),
+                CTZ_issued_district_devanagari: "काठमाडौं",
+                CTZ_date_of_issue: new Date('2020-02-29').toISOString(),
+
                 CTZ_issuer_name: "Ram Lal",
+                CTZ_issuer_name_devanagari: "राम लाल",
+                CTZ_issuer_designation_devanagari: "जिल्ला प्रशासन अधिकारी",
+
 
             },
 
