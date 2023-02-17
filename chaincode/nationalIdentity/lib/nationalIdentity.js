@@ -45,7 +45,7 @@ class NationalIdentity extends Contract {
                 birth_tole: 'Kathmandu',
 
                 permanent_state: 'Bagmati',
-                permanent_state_deveanagari: "बागमती",
+                permanent_state_devanagari: "बागमती",
                 permanent_district: 'Kathmandu',
                 permanent_district_devanagari: "काठमाडौं",
                 permanent_municipality: 'Kathmandu',
