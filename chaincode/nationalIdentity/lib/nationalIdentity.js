@@ -34,6 +34,7 @@ class NationalIdentity extends Contract {
                 occupation: 'Student',
                 caste: 'Brahmin',
                 religion: 'Hindu',
+                nationality: 'Nepalese',
 
                 birth_state: 'Bagmati',
                 birth_state_devanagari: "बागमती",
