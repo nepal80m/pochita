@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
             //  { expiresIn: "1h" }
         );
         console.log(`Logged in. Returning token: ${token}`)
-        res.status(201).json({ user: existingUser, token });
+        res.status(201).json({ user: existingUser.username, token });
 
 
 
