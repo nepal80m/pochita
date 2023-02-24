@@ -86,9 +86,9 @@ export const queryDrivingLicenseByNIN = async (req: Request, res: Response) => {
             dvlResult.permanent_state = nidResult.permanent_state;
             dvlResult.permanent_district = nidResult.permanent_district;
             dvlResult.permanent_municipality = nidResult.permanent_municipality;
-            dvlResult.permanent_ward = nidResult.permanent_ward;
+            dvlResult.permanent_ward_number = nidResult.permanent_ward_number;
             dvlResult.permanent_tole = nidResult.permanent_tole;
-            dvlResult.dob = nidResult.dob;
+            dvlResult.date_of_birth = nidResult.date_of_birth;
             dvlResult.father_first_name = nidResult.father_first_name;
             dvlResult.father_middle_name = nidResult.father_middle_name;
             dvlResult.father_last_name = nidResult.father_last_name;

@@ -81,7 +81,7 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
             ctzResult.last_name = nidResult.last_name;
             ctzResult.last_name_devanagari = nidResult.last_name_devanagari;
 
-            ctzResult.dob = nidResult.dob;
+            ctzResult.date_of_birth = nidResult.date_of_birth;
             ctzResult.gender = nidResult.gender;
 
             ctzResult.birth_state = nidResult.birth_state;
@@ -90,7 +90,7 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
             ctzResult.birth_district_devanagari = nidResult.birth_district_devanagari;
             ctzResult.birth_municipality = nidResult.birth_municipality;
             ctzResult.birth_municipality_devanagari = nidResult.birth_municipality_devanagari;
-            ctzResult.birth_ward = nidResult.birth_ward;
+            ctzResult.birth_ward_number = nidResult.birth_ward_number;
             ctzResult.birth_tole = nidResult.birth_tole;
 
             ctzResult.permanent_state = nidResult.permanent_state;
@@ -99,7 +99,7 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
             ctzResult.permanent_district_devanagari = nidResult.permanent_district_devanagari;
             ctzResult.permanent_municipality = nidResult.permanent_municipality;
             ctzResult.permanent_municipality_devanagari = nidResult.permanent_municipality_devanagari;
-            ctzResult.permanent_ward = nidResult.permanent_ward;
+            ctzResult.permanent_ward_number = nidResult.permanent_ward_number;
             ctzResult.permanent_tole = nidResult.permanent_tole;
             ctzResult.permanent_house_number = nidResult.permanent_house_number;
 
