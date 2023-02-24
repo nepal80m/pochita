@@ -23,7 +23,7 @@ class DrivingLicense extends Contract {
                 DVL_blood_group: "A+",
                 DVL_categories: ["A", "B"],
                 DVL_date_of_issue: '2020-02-29',
-                DVL_date_of_expiry: '2025-02-2',
+                DVL_date_of_expiry: '2025-02-28',
                 DVL_issuer: "Ram Lal",
 
             },
