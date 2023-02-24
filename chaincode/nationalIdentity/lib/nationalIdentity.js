@@ -27,7 +27,7 @@ class NationalIdentity extends Contract {
                 middle_name_devanagari: null,
                 last_name: 'Nepal',
                 last_name_devanagari: "नेपाल",
-                dob: new Date('2000-02-29').toISOString(),
+                date_of_birth: '2000-02-29',
                 gender: 'Male',
                 marital_status: 'Unmarried',
                 academic_qualification: 'Bachelors in Computer Science',
@@ -100,7 +100,7 @@ class NationalIdentity extends Contract {
                 spouse_NIN: null,
                 spouse_nationality: null,
 
-                NID_date_of_issue: new Date('2020-02-29').toISOString(),
+                NID_date_of_issue: '2020-02-29',
 
             },
 

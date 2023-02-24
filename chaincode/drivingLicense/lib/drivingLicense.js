@@ -22,8 +22,8 @@ class DrivingLicense extends Contract {
                 DVL_DLN: "1234567890",
                 DVL_blood_group: "A+",
                 DVL_categories: ["A", "B"],
-                DVL_date_of_issue: new Date('2020-02-29').toISOString(),
-                DVL_date_of_expiry: new Date('2025-02-29').toISOString(),
+                DVL_date_of_issue: '2020-02-29',
+                DVL_date_of_expiry: '2025-02-29',
                 DVL_issuer: "Ram Lal",
 
             },

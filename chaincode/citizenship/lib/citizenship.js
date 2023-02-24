@@ -38,7 +38,7 @@ class Citizenship extends Contract {
 
                 CTZ_issued_district: "Kathmandu",
                 CTZ_issued_district_devanagari: "काठमाडौं",
-                CTZ_date_of_issue: new Date('2020-02-29').toISOString(),
+                CTZ_date_of_issue: '2020-02-29',
 
                 CTZ_issuer_name: "Ram Lal",
                 CTZ_issuer_name_devanagari: "राम लाल",
