@@ -29,7 +29,7 @@ class NationalIdentity extends Contract {
                 last_name_devanagari: "नेपाल",
                 dob: new Date('2000-02-29').toISOString(),
                 gender: 'Male',
-                marital_status: 'Single',
+                marital_status: 'Unmarried',
                 academic_qualification: 'Bachelors in Computer Science',
                 occupation: 'Student',
                 caste: 'Brahmin',
