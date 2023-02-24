@@ -42,7 +42,7 @@ class NationalIdentity extends Contract {
                 birth_district_devanagari: "काठमाडौं",
                 birth_municipality: 'Kathmandu',
                 birth_municipality_devanagari: "काठमाडौं",
-                birth_ward: '1',
+                birth_ward_number: 1,
                 birth_tole: 'Kathmandu',
 
                 permanent_state: 'Bagmati',
@@ -51,14 +51,14 @@ class NationalIdentity extends Contract {
                 permanent_district_devanagari: "काठमाडौं",
                 permanent_municipality: 'Kathmandu',
                 permanent_municipality_devanagari: "काठमाडौं",
-                permanent_ward: '1',
+                permanent_ward_number: 1,
                 permanent_tole: 'Kathmandu',
-                permanent_house_number: '1',
+                permanent_house_number: 1,
 
                 temporary_state: 'Bagmati',
                 temporary_district: 'Kathmandu',
                 temporary_municipality: 'Kathmandu',
-                temporary_ward: '1',
+                temporary_ward_number: 1,
                 temporary_tole: 'Kathmandu',
 
                 father_first_name: 'Dad',
