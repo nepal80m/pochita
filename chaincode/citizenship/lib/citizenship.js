@@ -44,14 +44,15 @@ class Citizenship extends Contract {
                 CTZ_issuer_name_devanagari: "राम लाल",
                 CTZ_issuer_designation_devanagari: "जिल्ला प्रशासन अधिकारी",
 
+                createdAt: new Date("2022-02-02").toISOString(),
+                updatedAt: new Date("2022-02-02").toISOString(),
+
 
             },
 
         ];
         for (const citizenship of citizenships) {
             citizenship.docType = 'CTZ';
-            citizenship.createdAt = new Date().toISOString();
-            citizenship.updatedAt = new Date().toISOString();
             await ctx.stub.putState(
                 citizenship.NIN,
                 Buffer.from(stringify(citizenship))
@@ -76,27 +77,20 @@ class Citizenship extends Contract {
 
         const citizenship = JSON.parse(documentDetails);
         citizenship.docType = 'CTZ';
-        citizenship.createdAt = new Date().toISOString();
-        citizenship.updatedAt = new Date().toISOString();
         await ctx.stub.putState(NIN, Buffer.from(stringify(citizenship)));
         return JSON.stringify(citizenship)
     }
 
     async updateCitizenship(ctx, NIN, updatedDocumentDetails) {
 
-        // const exists = await this.checkIfCitizenshipExists(ctx, NIN);
-        const citizenshipAsBytes = await ctx.stub.getState(NIN);
-        const exists = citizenshipAsBytes && citizenshipAsBytes.length > 0;
+        const exists = await this.checkIfCitizenshipExists(ctx, NIN);
         if (!exists) {
             throw new Error(`Citizenship of NIN:${NIN} does not exist`);
         }
 
-        const existingCitizenship = JSON.parse(Buffer.from(citizenshipAsBytes).toString('utf8'));
-
         const updatedCitizenship = JSON.parse(updatedDocumentDetails);
-        updatedCitizenship.updatedAt = new Date().toISOString();
 
-        await ctx.stub.putState(NIN, Buffer.from(stringify({ ...existingCitizenship, ...updatedCitizenship })));
+        await ctx.stub.putState(NIN, Buffer.from(stringify(updatedCitizenship)));
         return JSON.stringify(updatedCitizenship)
     }
 

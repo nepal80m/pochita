@@ -102,13 +102,14 @@ class NationalIdentity extends Contract {
 
                 NID_date_of_issue: '2020-02-29',
 
+                createdAt: new Date("2022-02-02").toISOString(),
+                updatedAt: new Date("2022-02-02").toISOString(),
+
             },
 
         ];
         for (const nationalIdentity of nationalIdentities) {
             nationalIdentity.docType = 'NID';
-            nationalIdentity.createdAt = new Date().toISOString();
-            nationalIdentity.updatedAt = new Date().toISOString();
             await ctx.stub.putState(
                 nationalIdentity.NIN,
                 Buffer.from(stringify(nationalIdentity))
@@ -133,29 +134,21 @@ class NationalIdentity extends Contract {
 
         const nationalIdentity = JSON.parse(documentDetails);
         nationalIdentity.docType = 'NID';
-        nationalIdentity.createdAt = new Date().toISOString();
-        nationalIdentity.updatedAt = new Date().toISOString();
-
         await ctx.stub.putState(NIN, Buffer.from(stringify(nationalIdentity)));
         return JSON.stringify(nationalIdentity)
     }
 
     async updateNationalIdentity(ctx, NIN, updatedDocumentDetails) {
-        const nationalIdentityAsBytes = await ctx.stub.getState(NIN);
-        const exists = nationalIdentityAsBytes && nationalIdentityAsBytes.length > 0;
 
-        // const exists = await this.checkIfNationalIdentityExists(ctx, NIN);
+        const exists = await this.checkIfNationalIdentityExists(ctx, NIN);
         if (!exists) {
             throw new Error(`National identity ${NIN} does not exist`);
 
         }
 
 
-        const existingNationalIdentity = JSON.parse(Buffer.from(nationalIdentityAsBytes).toString('utf8'));
-
         const updatedNationalIdentity = JSON.parse(updatedDocumentDetails)
-        updatedDocumentDetails.updatedAt = new Date().toISOString();
-        await ctx.stub.putState(NIN, Buffer.from(stringify({ ...existingNationalIdentity, ...updatedNationalIdentity })));
+        await ctx.stub.putState(NIN, Buffer.from(stringify(updatedNationalIdentity)));
         return JSON.stringify(updatedNationalIdentity)
     }
 

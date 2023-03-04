@@ -29,7 +29,14 @@ export const createCitizenship = async (req: Request, res: Response) => {
     }
     try {
 
-        const resultBytes = await Connection.citizenshipContract.submitTransaction('createCitizenship', NIN, JSON.stringify(documentDetails));
+        const resultBytes = await Connection.citizenshipContract.submitTransaction('createCitizenship',
+            NIN,
+            JSON.stringify({
+                ...documentDetails,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            })
+        );
 
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
@@ -160,7 +167,12 @@ export const updateCitizenship = async (req: Request, res: Response) => {
         return res.status(400).json({ message: "NIN or documentDetails missing" });
     }
 
-    const resultBytes = await Connection.citizenshipContract.submitTransaction('updateCitizenship', NIN, JSON.stringify(documentDetails));
+    const resultBytes = await Connection.citizenshipContract.submitTransaction('updateCitizenship',
+        NIN,
+        JSON.stringify({
+            ...documentDetails,
+            updatedAt: new Date().toISOString()
+        }));
 
     const resultJson = utf8Decoder.decode(resultBytes);
     const result = JSON.parse(resultJson);
