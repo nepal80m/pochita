@@ -107,8 +107,8 @@ class NationalIdentity extends Contract {
         ];
         for (const nationalIdentity of nationalIdentities) {
             nationalIdentity.docType = 'NID';
-            nationalIdentities.createdAt = new Date().toISOString();
-            nationalIdentities.updatedAt = new Date().toISOString();
+            nationalIdentity.createdAt = new Date().toISOString();
+            nationalIdentity.updatedAt = new Date().toISOString();
             await ctx.stub.putState(
                 nationalIdentity.NIN,
                 Buffer.from(stringify(nationalIdentity))
