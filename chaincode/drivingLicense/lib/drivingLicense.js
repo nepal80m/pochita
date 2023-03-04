@@ -31,6 +31,8 @@ class DrivingLicense extends Contract {
         ];
         for (const drivingLicense of drivingLicenses) {
             drivingLicense.docType = 'DVL';
+            drivingLicense.createdAt = new Date().toISOString();
+            drivingLicense.updatedAt = new Date().toISOString();
             await ctx.stub.putState(
                 drivingLicense.NIN,
                 Buffer.from(stringify(drivingLicense))
@@ -55,19 +57,25 @@ class DrivingLicense extends Contract {
 
         const drivingLicense = JSON.parse(documentDetails);
         drivingLicense.docType = 'DVL';
+        drivingLicense.createdAt = new Date().toISOString();
+        drivingLicense.updatedAt = new Date().toISOString();
         await ctx.stub.putState(NIN, Buffer.from(stringify(drivingLicense)));
         return JSON.stringify(drivingLicense)
     }
 
     async updateDrivingLicense(ctx, NIN, updatedDocumentDetails) {
+        const drivingLicenseAsBytes = await ctx.stub.getState(NIN);
+        const exists = drivingLicenseAsBytes && drivingLicenseAsBytes.length > 0;
 
-        const exists = await this.checkIfDrivingLicenseExists(ctx, NIN);
+        // const exists = await this.checkIfDrivingLicenseExists(ctx, NIN);
         if (!exists) {
             throw new Error(`Driving License of NIN:${NIN} does not exist`);
         }
+        const existingDrivingLicense = JSON.parse(Buffer.from(citizenshipAsBytes).toString('utf8'));
 
-        const updatedDrivingLicense = JSON.parse(updatedDocumentDetails)
-        await ctx.stub.putState(NIN, Buffer.from(stringify(updatedDrivingLicense)));
+        const updatedDrivingLicense = JSON.parse(updatedDocumentDetails);
+        updatedDrivingLicense.updatedAt = new Date().toISOString();
+        await ctx.stub.putState(NIN, Buffer.from(stringify({ ...existingDrivingLicense, ...updatedDrivingLicense })));
         return JSON.stringify(updatedDrivingLicense)
     }
 
@@ -97,9 +105,23 @@ class DrivingLicense extends Contract {
     }
 
     async checkIfDrivingLicenseExists(ctx, NIN) {
-        const nationalIdentityAsBytes = await ctx.stub.getState(NIN);
-        return nationalIdentityAsBytes && nationalIdentityAsBytes.length > 0;
+        const drivingLicenseAsBytes = await ctx.stub.getState(NIN);
+        return drivingLicenseAsBytes && drivingLicenseAsBytes.length > 0;
     }
+
+    async getLastUpdatedDate(ctx, NIN) {
+        const drivingLicenseAsBytes = await ctx.stub.getState(NIN);
+        const exists = drivingLicenseAsBytes && drivingLicenseAsBytes.length > 0;
+
+        if (!exists) {
+            throw new Error(`Driving License of NIN:${NIN} does not exist`);
+        }
+
+        const existingDrivingLicense = JSON.parse(Buffer.from(citizenshipAsBytes).toString('utf8'));
+        return existingDrivingLicense.updatedAt;
+    }
+
+
 
 
 }

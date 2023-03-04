@@ -50,6 +50,8 @@ class Citizenship extends Contract {
         ];
         for (const citizenship of citizenships) {
             citizenship.docType = 'CTZ';
+            citizenship.createdAt = new Date().toISOString();
+            citizenship.updatedAt = new Date().toISOString();
             await ctx.stub.putState(
                 citizenship.NIN,
                 Buffer.from(stringify(citizenship))
@@ -74,19 +76,27 @@ class Citizenship extends Contract {
 
         const citizenship = JSON.parse(documentDetails);
         citizenship.docType = 'CTZ';
+        citizenship.createdAt = new Date().toISOString();
+        citizenship.updatedAt = new Date().toISOString();
         await ctx.stub.putState(NIN, Buffer.from(stringify(citizenship)));
         return JSON.stringify(citizenship)
     }
 
     async updateCitizenship(ctx, NIN, updatedDocumentDetails) {
 
-        const exists = await this.checkIfCitizenshipExists(ctx, NIN);
+        // const exists = await this.checkIfCitizenshipExists(ctx, NIN);
+        const citizenshipAsBytes = await ctx.stub.getState(NIN);
+        const exists = citizenshipAsBytes && citizenshipAsBytes.length > 0;
         if (!exists) {
             throw new Error(`Citizenship of NIN:${NIN} does not exist`);
         }
 
-        const updatedCitizenship = JSON.parse(updatedDocumentDetails)
-        await ctx.stub.putState(NIN, Buffer.from(stringify(updatedCitizenship)));
+        const existingCitizenship = JSON.parse(Buffer.from(citizenshipAsBytes).toString('utf8'));
+
+        const updatedCitizenship = JSON.parse(updatedDocumentDetails);
+        updatedCitizenship.updatedAt = new Date().toISOString();
+
+        await ctx.stub.putState(NIN, Buffer.from(stringify({ ...existingCitizenship, ...updatedCitizenship })));
         return JSON.stringify(updatedCitizenship)
     }
 
@@ -119,6 +129,19 @@ class Citizenship extends Contract {
         const citizenshipAsBytes = await ctx.stub.getState(key);
         return citizenshipAsBytes && citizenshipAsBytes.length > 0;
     }
+
+    async getLastUpdatedDate(ctx, NIN) {
+        const citizenshipAsBytes = await ctx.stub.getState(NIN);
+        const exists = citizenshipAsBytes && citizenshipAsBytes.length > 0;
+        if (!exists) {
+            throw new Error(`Citizenship of NIN:${NIN} does not exist`);
+        }
+
+        const existingCitizenship = JSON.parse(Buffer.from(citizenshipAsBytes).toString('utf8'));
+        return existingCitizenship.updatedAt;
+    }
+
+
 
 
 }

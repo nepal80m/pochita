@@ -107,6 +107,8 @@ class NationalIdentity extends Contract {
         ];
         for (const nationalIdentity of nationalIdentities) {
             nationalIdentity.docType = 'NID';
+            nationalIdentities.createdAt = new Date().toISOString();
+            nationalIdentities.updatedAt = new Date().toISOString();
             await ctx.stub.putState(
                 nationalIdentity.NIN,
                 Buffer.from(stringify(nationalIdentity))
@@ -131,20 +133,29 @@ class NationalIdentity extends Contract {
 
         const nationalIdentity = JSON.parse(documentDetails);
         nationalIdentity.docType = 'NID';
+        nationalIdentity.createdAt = new Date().toISOString();
+        nationalIdentity.updatedAt = new Date().toISOString();
+
         await ctx.stub.putState(NIN, Buffer.from(stringify(nationalIdentity)));
         return JSON.stringify(nationalIdentity)
     }
 
     async updateNationalIdentity(ctx, NIN, updatedDocumentDetails) {
+        const nationalIdentityAsBytes = await ctx.stub.getState(NIN);
+        const exists = nationalIdentityAsBytes && nationalIdentityAsBytes.length > 0;
 
-        const exists = await this.checkIfNationalIdentityExists(ctx, NIN);
+        // const exists = await this.checkIfNationalIdentityExists(ctx, NIN);
         if (!exists) {
             throw new Error(`National identity ${NIN} does not exist`);
 
         }
 
+
+        const existingNationalIdentity = JSON.parse(Buffer.from(nationalIdentityAsBytes).toString('utf8'));
+
         const updatedNationalIdentity = JSON.parse(updatedDocumentDetails)
-        await ctx.stub.putState(NIN, Buffer.from(stringify(updatedNationalIdentity)));
+        updatedDocumentDetails.updatedAt = new Date().toISOString();
+        await ctx.stub.putState(NIN, Buffer.from(stringify({ ...existingNationalIdentity, ...updatedNationalIdentity })));
         return JSON.stringify(updatedNationalIdentity)
     }
 
@@ -177,6 +188,19 @@ class NationalIdentity extends Contract {
         const nationalIdentityAsBytes = await ctx.stub.getState(NIN);
         return nationalIdentityAsBytes && nationalIdentityAsBytes.length > 0;
     }
+
+    async getLastUpdatedDate(ctx, NIN) {
+        const nationalIdentityAsBytes = await ctx.stub.getState(NIN);
+        const exists = nationalIdentityAsBytes && nationalIdentityAsBytes.length > 0;
+
+        if (!exists) {
+            throw new Error(`National identity ${NIN} does not exist`);
+        }
+
+        const existingNationalIdentity = JSON.parse(Buffer.from(nationalIdentityAsBytes).toString('utf8'));
+        return existingNationalIdentity.updatedAt;
+    }
+
 
 
 }

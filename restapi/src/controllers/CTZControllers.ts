@@ -209,3 +209,32 @@ export const checkIfCitizenshipExists = async (req: Request, res: Response) => {
     }
 
 };
+
+export const getLastUpdatedDate = async (req: Request, res: Response) => {
+    const { NIN } = req.params
+    console.log(`Requested to get last updated date of CTZ with NIN: ${NIN}`)
+
+    try {
+        let resultBytes = await Connection.citizenshipContract.evaluateTransaction('checkIfCitizenshipExists', NIN);
+        let resultJson = utf8Decoder.decode(resultBytes);
+        let result = JSON.parse(resultJson);
+        if (!result) {
+            console.log("CTZ does not exist")
+            res.status(404).send({ message: "CTZ doesnot exist." })
+        }
+
+
+        resultBytes = await Connection.citizenshipContract.evaluateTransaction('getLastUpdatedDate', NIN);
+        resultJson = utf8Decoder.decode(resultBytes);
+        result = JSON.parse(resultJson);
+        console.log(`Document last updated at ${result}`)
+        res.status(200).send({ NIN, updatedAt: result })
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Something went wrong." });
+
+    }
+
+};

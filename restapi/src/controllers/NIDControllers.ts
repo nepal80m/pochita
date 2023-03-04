@@ -146,3 +146,34 @@ export const checkIfNationalIdentityExists = async (req: Request, res: Response)
     }
 
 };
+
+
+
+export const getLastUpdatedDate = async (req: Request, res: Response) => {
+    const { NIN } = req.params
+    console.log(`Requested to get last updated date of NID with NIN: ${NIN}`)
+
+    try {
+        let resultBytes = await Connection.nationalIdentityContract.evaluateTransaction('checkIfNationalIdentityExists', NIN);
+        let resultJson = utf8Decoder.decode(resultBytes);
+        let result = JSON.parse(resultJson);
+        if (!result) {
+            console.log("NID does not exist")
+            res.status(404).send({ message: "NID doesnot exist." })
+        }
+
+
+        resultBytes = await Connection.nationalIdentityContract.evaluateTransaction('getLastUpdatedDate', NIN);
+        resultJson = utf8Decoder.decode(resultBytes);
+        result = JSON.parse(resultJson);
+        console.log(`Document last updated at ${result}`)
+        res.status(200).send({ NIN, updatedAt: result })
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Something went wrong." });
+
+    }
+
+};

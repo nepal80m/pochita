@@ -183,3 +183,33 @@ export const checkIfDrivingLicenseExists = async (req: Request, res: Response) =
     }
 
 };
+
+
+export const getLastUpdatedDate = async (req: Request, res: Response) => {
+    const { NIN } = req.params
+    console.log(`Requested to get last updated date of DVL with NIN: ${NIN}`)
+
+    try {
+        let resultBytes = await Connection.drivingLicenseContract.evaluateTransaction('checkIfDrivingLicenseExists', NIN);
+        let resultJson = utf8Decoder.decode(resultBytes);
+        let result = JSON.parse(resultJson);
+        if (!result) {
+            console.log("DVL does not exist")
+            res.status(404).send({ message: "DVL doesnot exist." })
+        }
+
+
+        resultBytes = await Connection.drivingLicenseContract.evaluateTransaction('getLastUpdatedDate', NIN);
+        resultJson = utf8Decoder.decode(resultBytes);
+        result = JSON.parse(resultJson);
+        console.log(`Document last updated at ${result}`)
+        res.status(200).send({ NIN, updatedAt: result })
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Something went wrong." });
+
+    }
+
+};
