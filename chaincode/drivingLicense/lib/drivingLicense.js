@@ -112,7 +112,7 @@ class DrivingLicense extends Contract {
             throw new Error(`Driving License of NIN:${NIN} does not exist`);
         }
 
-        const existingDrivingLicense = JSON.parse(Buffer.from(citizenshipAsBytes).toString('utf8'));
+        const existingDrivingLicense = JSON.parse(Buffer.from(drivingLicenseAsBytes).toString('utf8'));
         return existingDrivingLicense.updatedAt;
     }
 
