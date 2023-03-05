@@ -13,7 +13,7 @@ export const queryAllNationalIdentities = async (req: Request, res: Response) =>
     const resultJson = utf8Decoder.decode(resultBytes);
     const result = JSON.parse(resultJson);
     console.log(`Returning data: ${result}`)
-    res.send(result)
+    res.json(result)
 };
 
 
@@ -41,7 +41,7 @@ export const createNationalIdentity = async (req: Request, res: Response) => {
         const result = JSON.parse(resultJson);
         console.log(`Created national identity with NIN: ${NIN}`)
         console.log(`Returning data: ${result}`)
-        res.send(result)
+        res.json(result)
 
     } catch (error) {
         console.log(error)
@@ -72,13 +72,13 @@ export const queryNationalIdentity = async (req: Request, res: Response) => {
             const resultJson = utf8Decoder.decode(resultBytes);
             const result = JSON.parse(resultJson);
             console.log(`Returning data: ${JSON.stringify(result)}`)
-            res.status(200).send(result)
+            res.status(200).json(result)
 
 
         }
         else {
             console.log("NID does not exist")
-            res.status(404).send({ message: "NID does not exist" })
+            res.status(404).json({ message: "NID does not exist" })
         }
 
 
@@ -114,7 +114,7 @@ export const updateNationalIdentity = async (req: Request, res: Response) => {
     const result = JSON.parse(resultJson);
     console.log(`Updated national identity with NIN: ${NIN}`)
     console.log(`Returning data: ${result}`)
-    res.send(result)
+    res.json(result)
 };
 
 
@@ -124,10 +124,10 @@ export const deleteNationalIdentity = async (req: Request, res: Response) => {
     console.log(`Requested to delete NID with NIN: ${NIN}`)
 
     await Connection.nationalIdentityContract.submitTransaction('deleteNationalIdentity', NIN);
-    console.log(`Deleted national identity with NIN: ${NIN}`)
+    console.log(`Deleted national identity with NIN: ${NIN}`);
 
 
-    res.status(404).send({ message: "Deleted the national identity" })
+    res.status(404).json({ message: "Deleted the national identity" });
 };
 
 
@@ -143,11 +143,11 @@ export const checkIfNationalIdentityExists = async (req: Request, res: Response)
         const result = JSON.parse(resultJson);
         if (result) {
             console.log("NID exists")
-            res.status(200).send({ NIN, exists: result })
+            res.status(200).json({ NIN, exists: result })
         }
         else {
             console.log("NID does not exist")
-            res.status(404).send({ NIN, exists: result })
+            res.status(404).json({ NIN, exists: result })
 
         }
     } catch (error) {
@@ -170,7 +170,7 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
         let result = JSON.parse(resultJson);
         if (!result) {
             console.log("NID does not exist")
-            res.status(404).send({ message: "NID doesnot exist." })
+            res.status(404).json({ message: "NID doesnot exist." })
         }
 
 
@@ -178,7 +178,7 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
         resultJson = utf8Decoder.decode(resultBytes);
         result = JSON.parse(resultJson);
         console.log(`Document last updated at ${result}`)
-        res.status(200).send({ NIN, updatedAt: result })
+        res.status(200).json({ NIN, updatedAt: result })
 
 
     } catch (error) {

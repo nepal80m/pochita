@@ -13,7 +13,7 @@ export const queryAllDrivingLicenses = async (req: Request, res: Response) => {
     const resultJson = utf8Decoder.decode(resultBytes);
     const result = JSON.parse(resultJson);
     console.log(`Returning data: ${result}`)
-    res.send(result)
+    res.json(result)
 };
 
 
@@ -41,7 +41,7 @@ export const createDrivingLicense = async (req: Request, res: Response) => {
         const result = JSON.parse(resultJson);
         console.log(`Created driving license with NIN: ${NIN}`)
         console.log(`Returning data: ${result}`)
-        res.send(result)
+        res.json(result)
 
     } catch (error) {
         console.log(error)
@@ -104,13 +104,13 @@ export const queryDrivingLicenseByNIN = async (req: Request, res: Response) => {
             dvlResult.mobile_number = nidResult.mobile_number;
 
             console.log(`Returning data: ${JSON.stringify(dvlResult)}`)
-            res.status(200).send(dvlResult)
+            res.status(200).json(dvlResult)
 
 
         }
         else {
             console.log("DVL does not exist")
-            res.status(404).send({ message: "DVL does not exist" })
+            res.status(404).json({ message: "DVL does not exist" })
         }
 
 
@@ -151,7 +151,7 @@ export const updateDrivingLicense = async (req: Request, res: Response) => {
     const result = JSON.parse(resultJson);
     console.log(`Updated driving license with NIN: ${NIN}`)
     console.log(`Returning data: ${result}`)
-    res.send(result)
+    res.json(result)
 };
 
 
@@ -164,7 +164,7 @@ export const deleteDrivingLicense = async (req: Request, res: Response) => {
     console.log(`Deleted DVL with NIN: ${NIN}`)
 
 
-    res.status(404).send({ message: "Deleted the driving license." })
+    res.status(404).json({ message: "Deleted the driving license." })
 };
 
 
@@ -180,11 +180,11 @@ export const checkIfDrivingLicenseExists = async (req: Request, res: Response) =
         const result = JSON.parse(resultJson);
         if (result) {
             console.log("DVL exists")
-            res.status(200).send({ NIN, exists: result })
+            res.status(200).json({ NIN, exists: result })
         }
         else {
             console.log("DVL does not exist")
-            res.status(404).send({ NIN, exists: result })
+            res.status(404).json({ NIN, exists: result })
 
         }
     } catch (error) {
@@ -206,7 +206,7 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
         let result = JSON.parse(resultJson);
         if (!result) {
             console.log("DVL does not exist")
-            res.status(404).send({ message: "DVL doesnot exist." })
+            res.status(404).json({ message: "DVL doesnot exist." })
         }
 
 
@@ -214,7 +214,7 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
         resultJson = utf8Decoder.decode(resultBytes);
         result = JSON.parse(resultJson);
         console.log(`Document last updated at ${result}`)
-        res.status(200).send({ NIN, updatedAt: result })
+        res.status(200).json({ NIN, updatedAt: result })
 
 
     } catch (error) {

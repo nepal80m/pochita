@@ -13,7 +13,7 @@ export const queryAllCitizenships = async (req: Request, res: Response) => {
     const resultJson = utf8Decoder.decode(resultBytes);
     const result = JSON.parse(resultJson);
     console.log(`Returning data: ${result}`)
-    res.send(result)
+    res.json(result)
 };
 
 
@@ -42,7 +42,7 @@ export const createCitizenship = async (req: Request, res: Response) => {
         const result = JSON.parse(resultJson);
         console.log(`Created citizenship with NIN: ${NIN}`)
         console.log(`Returning data: ${result}`)
-        res.send(result)
+        res.json(result)
 
     } catch (error) {
         console.log(error)
@@ -134,12 +134,12 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
 
 
             console.log(`Returning data: ${JSON.stringify(ctzResult)}`)
-            res.status(200).send(ctzResult)
+            res.status(200).json(ctzResult)
 
         }
         else {
             console.log("CTZ does not exist")
-            res.status(404).send({ message: "CTZ does not exist" })
+            res.status(404).json({ message: "CTZ does not exist" })
         }
 
 
@@ -178,7 +178,7 @@ export const updateCitizenship = async (req: Request, res: Response) => {
     const result = JSON.parse(resultJson);
     console.log(`Updated citizenship with NIN: ${NIN}`)
     console.log(`Returning data: ${result}`)
-    res.send(result)
+    res.json(result)
 };
 
 
@@ -191,7 +191,7 @@ export const deleteCitizenship = async (req: Request, res: Response) => {
     console.log(`Deleted citizenship with NIN: ${NIN}`)
 
 
-    res.status(404).send({ message: "Deleted the citizenship." })
+    res.status(404).json({ message: "Deleted the citizenship." })
 };
 
 
@@ -207,11 +207,11 @@ export const checkIfCitizenshipExists = async (req: Request, res: Response) => {
         const result = JSON.parse(resultJson);
         if (result) {
             console.log("CTZ exists")
-            res.status(200).send({ NIN, exists: result })
+            res.status(200).json({ NIN, exists: result })
         }
         else {
             console.log("CTZ does not exist")
-            res.status(404).send({ NIN, exists: result })
+            res.status(404).json({ NIN, exists: result })
 
         }
     } catch (error) {
@@ -232,7 +232,7 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
         let result = JSON.parse(resultJson);
         if (!result) {
             console.log("CTZ does not exist")
-            res.status(404).send({ message: "CTZ doesnot exist." })
+            res.status(404).json({ message: "CTZ doesnot exist." })
         }
 
 
@@ -240,7 +240,7 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
         resultJson = utf8Decoder.decode(resultBytes);
         result = JSON.parse(resultJson);
         console.log(`Document last updated at ${result}`)
-        res.status(200).send({ NIN, updatedAt: result })
+        res.status(200).json({ NIN, updatedAt: result })
 
 
     } catch (error) {
