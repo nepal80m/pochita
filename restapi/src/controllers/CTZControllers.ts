@@ -238,9 +238,9 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
 
         resultBytes = await Connection.citizenshipContract.evaluateTransaction('getLastUpdatedDate', NIN);
         resultJson = utf8Decoder.decode(resultBytes);
-        result = JSON.parse(resultJson);
-        console.log(`Document last updated at ${result}`)
-        res.status(200).json({ NIN, updatedAt: result })
+        // result = JSON.parse(resultJson);
+        console.log(`Document last updated at ${resultJson}`)
+        res.status(200).json({ NIN, updatedAt: resultJson })
 
 
     } catch (error) {
