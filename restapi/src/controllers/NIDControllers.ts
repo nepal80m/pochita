@@ -176,6 +176,8 @@ export const getLastUpdatedDate = async (req: Request, res: Response) => {
 
         resultBytes = await Connection.nationalIdentityContract.evaluateTransaction('getLastUpdatedDate', NIN);
         resultJson = utf8Decoder.decode(resultBytes);
+        console.log(resultJson)
+        console.log(typeof (resultJson))
         result = JSON.parse(resultJson);
         console.log(`Document last updated at ${result}`)
         res.status(200).json({ NIN, updatedAt: result })
