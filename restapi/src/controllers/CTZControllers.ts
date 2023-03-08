@@ -134,7 +134,10 @@ export const queryCitizenshipByNIN = async (req: Request, res: Response) => {
 
 
             console.log(`Returning data: ${JSON.stringify(ctzResult)}`)
-            res.status(200).json(ctzResult)
+
+            const unsortedMap = new Map(Object.entries(ctzResult));
+            const sortedMap = new Map([...unsortedMap.entries()].sort());
+            res.status(200).json(sortedMap)
 
         }
         else {

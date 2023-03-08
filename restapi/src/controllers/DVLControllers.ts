@@ -104,7 +104,9 @@ export const queryDrivingLicenseByNIN = async (req: Request, res: Response) => {
             dvlResult.mobile_number = nidResult.mobile_number;
 
             console.log(`Returning data: ${JSON.stringify(dvlResult)}`)
-            res.status(200).json(dvlResult)
+            const unsortedMap = new Map(Object.entries(dvlResult));
+            const sortedMap = new Map([...unsortedMap.entries()].sort());
+            res.status(200).json(sortedMap)
 
 
         }
