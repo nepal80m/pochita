@@ -72,9 +72,7 @@ export const queryNationalIdentity = async (req: Request, res: Response) => {
             const resultJson = utf8Decoder.decode(resultBytes);
             const result = JSON.parse(resultJson);
             console.log(`Returning data: ${JSON.stringify(result)}`)
-            const unsortedMap = new Map(Object.entries(result));
-            const sortedMap = new Map([...unsortedMap.entries()].sort());
-            res.status(200).json(sortedMap)
+            res.status(200).json(result)
 
         }
         else {
